@@ -121,6 +121,7 @@ describe('DTO validation', () => {
     it('Allows valid data', async () => {
       const userCreateDto = plainToInstance(UserCreateDto, {
         email: 'test@example.com',
+        password: 'password',
         first_name: 'John',
         last_name: 'Doe',
       });
@@ -131,6 +132,7 @@ describe('DTO validation', () => {
     it('Fails when email is invalid', async () => {
       const userCreateDto = plainToInstance(UserCreateDto, {
         email: 'invalid-email',
+        password: 'password',
         first_name: 'John',
         last_name: 'Doe',
       });
@@ -144,6 +146,7 @@ describe('DTO validation', () => {
     it('Fails when first name is empty', async () => {
       const userCreateDto = plainToInstance(UserCreateDto, {
         email: 'test@example.com',
+        password: 'password',
         first_name: '',
         last_name: 'Doe',
       });
@@ -157,6 +160,7 @@ describe('DTO validation', () => {
     it('Allows last name to be optional', async () => {
       const userCreateDto = plainToInstance(UserCreateDto, {
         email: 'test@example.com',
+        password: 'password',
         first_name: 'John',
       });
       const errors = await validate(userCreateDto);
@@ -166,6 +170,7 @@ describe('DTO validation', () => {
     it('Fails when last name is an empty string', async () => {
       const userCreateDto = plainToInstance(UserCreateDto, {
         email: 'test@example.com',
+        password: 'password',
         first_name: 'John',
         last_name: '',
       });
