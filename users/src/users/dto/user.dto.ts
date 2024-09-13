@@ -1,6 +1,46 @@
-import { IsEmail, IsOptional, IsString, IsNotEmpty } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationOptions,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsNotEmpty,
+} from 'class-validator';
 
-export class UsersGETDto {}
+const IsNumeric = (validationOptions?: ValidationOptions) => {
+  return function (object: object, propertyName: string) {
+    registerDecorator({
+      name: 'isNumeric',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any) {
+          return typeof value === 'string' && /^\d+$/.test(value);
+        },
+      },
+    });
+  };
+};
+
+export class UserGetDto {
+  @IsNumeric({ message: 'User ID must be numeric string' })
+  id: string;
+}
+
+export class UserCreateDto {
+  @IsEmail({}, { message: 'Email address is required and must be valid' })
+  email: string;
+
+  @IsString({ message: 'First name must be a string' })
+  @IsNotEmpty({ message: 'First name cannot be empty' })
+  first_name: string;
+
+  @IsOptional()
+  @IsString({ message: 'Last name must be a string' })
+  @IsNotEmpty({ message: 'Last name cannot be empty' })
+  last_name?: string;
+}
 
 export class UserUpdateDto {
   @IsOptional()
@@ -8,12 +48,17 @@ export class UserUpdateDto {
   email?: string;
 
   @IsOptional()
-  @IsString({ message: 'Name must be a string' })
+  @IsString({ message: 'First name must be a string' })
   @IsNotEmpty({ message: 'First name cannot be empty' })
   first_name?: string;
 
   @IsOptional()
-  @IsString({ message: 'Name must be a string' })
+  @IsString({ message: 'Last name must be a string' })
   @IsNotEmpty({ message: 'Last name cannot be empty' })
   last_name?: string;
+}
+
+export class UserDeleteDto {
+  @IsNumeric({ message: 'User ID is required and must be numeric string' })
+  id: string;
 }
