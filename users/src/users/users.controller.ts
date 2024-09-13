@@ -39,13 +39,10 @@ export class UsersController {
   }
 
   // POST /api/users/{userId}
-  @Post(':userId')
-  async updateUser(
-    @Param('userId') userId: string,
-    @Body() data: UserUpdateDto,
-  ) {
-    await this.usersService.updateUser(userId, data);
-    return { message: `Successfully updated user with ID: ${userId}` };
+  @Post(':id')
+  async updateUser(@Param('id') id: string, @Body() data: UserUpdateDto) {
+    await this.usersService.updateUser(id, data);
+    return { message: `Successfully updated user with ID: ${id}` };
   }
 
   // DELETE /api/users/{userId}
