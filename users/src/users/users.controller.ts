@@ -30,6 +30,7 @@ export class UsersController {
   }
 
   // GET /api/userss/{userId}
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUser(@Param() params: UserGetByIdDto) {
     const { id } = params;
@@ -43,6 +44,7 @@ export class UsersController {
   }
 
   // POST /api/users
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createUser(@Body() userDto: UserCreateDto) {
     // Call the service to create a user
@@ -50,13 +52,19 @@ export class UsersController {
   }
 
   // POST /api/users/{userId}
+  @UseGuards(JwtAuthGuard)
   @Post(':id')
   async updateUser(@Param('id') id: string, @Body() data: UserUpdateDto) {
-    await this.usersService.updateUser(id, data);
+    const result = await this.usersService.updateUser(id, data);
+    if (!result) {
+      return { message: `User with ID ${id} not found` };
+    }
+
     return { message: `Successfully updated user with ID: ${id}` };
   }
 
   // DELETE /api/users/{userId}
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteUser(@Param() params: UserDeleteDto) {
     const { id } = params;

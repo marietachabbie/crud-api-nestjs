@@ -73,7 +73,7 @@ export class UsersService {
     try {
       const user = await this.userModel.updateOne({ id }, updateUserDto);
       if (user.matchedCount === 0) {
-        throw new Error(`User with ID ${id} not found`);
+        return null;
       }
 
       return user;
