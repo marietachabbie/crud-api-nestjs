@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -16,6 +17,8 @@ async function bootstrap() {
       disableErrorMessages: false,
     }),
   );
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   // Handle graceful shutdown
   app.enableShutdownHooks();
