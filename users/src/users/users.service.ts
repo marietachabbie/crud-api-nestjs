@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcryptjs';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -15,6 +16,8 @@ export class UsersService {
   // Method to create a new user with an auto-incrementing ID
   async createUser(userDto: UserCreateDto): Promise<User> {
     try {
+      const hashedPassword = await bcrypt.hash(userDto.password, 10);
+
       // Generate the next user ID
       const userId = await this.getNextSequenceValue('userId');
 
@@ -22,6 +25,7 @@ export class UsersService {
       const createdUser = new this.userModel({
         id: userId,
         ...userDto,
+        password: hashedPassword,
       });
 
       // Save the user to the database
@@ -49,7 +53,17 @@ export class UsersService {
       const user = await this.userModel.findOne({ id });
       return user;
     } catch (error) {
-      console.error('Error fetching user data:', error.message);
+      console.error('Error fetching user data by ID:', error.message);
+      throw error;
+    }
+  }
+
+  async getUserByEmail(email: string): Promise<User> {
+    try {
+      const user = await this.userModel.findOne({ email });
+      return user;
+    } catch (error) {
+      console.error('Error fetching user data by email:', error.message);
       throw error;
     }
   }

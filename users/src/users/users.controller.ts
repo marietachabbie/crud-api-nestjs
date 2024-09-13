@@ -1,8 +1,18 @@
-import { Controller, Post, Get, Param, Delete, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Delete,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 import {
   UserUpdateDto,
-  UserGetDto,
+  UserGetByIdDto,
   UserCreateDto,
   UserDeleteDto,
 } from './dto/user.dto';
@@ -12,6 +22,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   // GET /api/users
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers() {
     // Call the service to get all users
@@ -20,7 +31,7 @@ export class UsersController {
 
   // GET /api/userss/{userId}
   @Get(':id')
-  async getUser(@Param() params: UserGetDto) {
+  async getUser(@Param() params: UserGetByIdDto) {
     const { id } = params;
     // Call the service to get user details by ID
     const user = await this.usersService.getUserById(id);

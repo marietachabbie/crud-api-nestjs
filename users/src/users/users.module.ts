@@ -5,6 +5,9 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { User, UserSchema } from './user.schema';
 import { Counter, CounterSchema } from './counter.schema';
+import { AuthController } from 'src/auth/auth.controller';
+import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -24,7 +27,8 @@ import { Counter, CounterSchema } from './counter.schema';
       { name: Counter.name, schema: CounterSchema },
     ]),
   ],
-  controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, ConfigService, JwtService, AuthService],
+  controllers: [UsersController, AuthController],
+  exports: [UsersService],
 })
 export class UsersModule {}

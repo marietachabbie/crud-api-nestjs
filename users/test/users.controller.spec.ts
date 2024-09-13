@@ -4,7 +4,7 @@ import { validate } from 'class-validator';
 import { UsersController } from '../src/users/users.controller';
 import { UsersService } from '../src/users/users.service';
 import {
-  UserGetDto,
+  UserGetByIdDto,
   UserCreateDto,
   UserDeleteDto,
   UserUpdateDto,
@@ -55,7 +55,7 @@ describe('UsersController', () => {
 
   describe('getUser', () => {
     it('Returns user by given valid ID', async () => {
-      const userDto: UserGetDto = { id: '1' };
+      const userDto: UserGetByIdDto = { id: '1' };
       const result = await controller.getUser(userDto);
       expect(result).toEqual({ id: 1, name: 'John Doe' });
     });
@@ -73,6 +73,7 @@ describe('UsersController', () => {
         first_name: 'John',
         last_name: 'Doe',
         email: 'john@mail.com',
+        password: 'paassword',
       };
       const result = await controller.createUser(userDto);
       expect(result).toEqual({ id: 1, name: 'John Doe' });
@@ -99,15 +100,15 @@ describe('UsersController', () => {
 });
 
 describe('DTO validation', () => {
-  describe('UserGetDto validation', () => {
+  describe('UserGetByIdDto validation', () => {
     it('Allows valid numeric string as ID', async () => {
-      const userGetDto = plainToInstance(UserGetDto, { id: '123' });
+      const userGetDto = plainToInstance(UserGetByIdDto, { id: '123' });
       const errors = await validate(userGetDto);
       expect(errors.length).toBe(0);
     });
 
     it('Fails when non-numeric string is provided as ID', async () => {
-      const userGetDto = plainToInstance(UserGetDto, { id: 'abc' });
+      const userGetDto = plainToInstance(UserGetByIdDto, { id: 'abc' });
       const errors = await validate(userGetDto);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors[0].constraints?.isNumeric).toEqual(

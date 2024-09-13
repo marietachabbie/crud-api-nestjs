@@ -23,14 +23,24 @@ const IsNumeric = (validationOptions?: ValidationOptions) => {
   };
 };
 
-export class UserGetDto {
+export class UserGetByIdDto {
   @IsNumeric({ message: 'User ID must be numeric string' })
   id: string;
+}
+
+export class UserGetByEmailDto {
+  @IsString({ message: 'Password must be a string' })
+  @IsNotEmpty({ message: 'Password cannot be empty' })
+  password: string;
 }
 
 export class UserCreateDto {
   @IsEmail({}, { message: 'Email address is required and must be valid' })
   email: string;
+
+  @IsString({ message: 'Password must be a string' })
+  @IsNotEmpty({ message: 'Password cannot be empty' })
+  password: string;
 
   @IsString({ message: 'First name must be a string' })
   @IsNotEmpty({ message: 'First name cannot be empty' })
