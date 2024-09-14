@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:3000
+@authToken = YOUR_TOKEN
+
+###
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "auth-name@email.com",
+  "password": "pass"
+}
+
+###
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+
+###
+GET http://localhost:3000/api/users/46
+Authorization: Bearer {{authToken}}
+
+###
+DELETE http://localhost:3000/api/users/45
+Authorization: Bearer {{authToken}}
+
+###
+POST http://localhost:3000/api/users/
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "first_name": "Auth Name",
+  "last_name": "A.",
+  "email": "auth-name@email.com",
+  "password": "pass"
+}
+
+###
+POST http://localhost:3000/api/users/44
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "first_name": "newemail@email.com"
+}
