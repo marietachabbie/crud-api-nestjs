@@ -17,7 +17,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const status = this.getStatus(exception);
 
     if (exception instanceof BadRequestException) {
-      return response.status(status).json(exception);
+      return response.status(status).json(exception.getResponse());
     }
 
     const errorResponse = {
@@ -40,6 +40,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private getMessage(exception: unknown, status: HttpStatus): string {
     if (exception instanceof HttpException) {
+      if (status === 401) {
+        return 'Not authorized to access the URL';
+      }
+
       return exception.message;
     }
     return 'Internal server error';

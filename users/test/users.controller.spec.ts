@@ -73,7 +73,7 @@ describe('UsersController', () => {
         first_name: 'John',
         last_name: 'Doe',
         email: 'john@mail.com',
-        password: 'paassword',
+        password: 'password',
       };
       const result = await controller.createUser(userDto);
       expect(result).toEqual({ id: 1, name: 'John Doe' });
